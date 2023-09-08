@@ -46,7 +46,6 @@
           <div class="col-md-6">
             <label for="length" class="form-label">عدد الكلمات:</label>
             <select id="length" name="length" class="form-select">
-              <option value="0">0</option>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -70,17 +69,19 @@
         <div class="row">
           <div class="col-md-6">
             <label for="surah" class="form-label">السورة:</label>
-            <select id="surah" name="surah" class="form-select">
+            <select id="surah" name="surah" class="form-select" multiple="multiple" size="5">
               <option value="2">البقرة</option>
+              <option value="3">آل عمران</option>
             </select>
           </div>
           <div class="col-md-6">
             <label for="juz" class="form-label">الجزء:</label>
-            <select id="juz" name="juz" class="form-select">
+            <select id="juz" name="juz" class="form-select" multiple="multiple" size="5">
               <option value="all">الكل</option>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
+              <option value="4">4</option>
             </select>
           </div>
         </div>
@@ -104,17 +105,19 @@
         <div class="row">
           <div class="col-md-6">
             <label for="quesSurah" class="form-label">السورة:</label>
-            <select id="quesSurah" name="quesSurah" class="form-select">
+            <select id="quesSurah" name="quesSurah" class="form-select" multiple="multiple" size="5">
               <option value="2">البقرة</option>
+              <option value="3">آل عمران</option>
             </select>
           </div>
           <div class="col-md-6">
             <label for="quesJuz" class="form-label">الجزء:</label>
-            <select id="quesJuz" name="quesJuz" class="form-select">
+            <select id="quesJuz" name="quesJuz" class="form-select" multiple="multiple" size="5">
               <option value="all">الكل</option>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
+              <option value="4">4</option>
             </select>
           </div>
         </div>
@@ -168,17 +171,18 @@
   </div>
 
   <script src="bootstrap.min.js"></script>
-  <script src="verses.js"></script>
+  <script src="jquery-3.3.1.slim.min.js"></script>
+  <script src="verses.min.js"></script>
   <script src="scripts.js"></script>
   <script>
     function show() {
-      const q = document.querySelector;
+      
       displaySimilarity('#results',
-        document.querySelector('#length').value,
-        document.querySelector('#edge').value,
-        document.querySelector("#surah").value,
-        document.querySelector("#juz").value,
-        document.querySelector("#remove").checked
+        jQuery('#length').val(),
+        jQuery('#edge').val(),
+        jQuery("#surah").val(),
+        jQuery("#juz").val(),
+        jQuery("#remove").checked
       );
     }
 

@@ -72,16 +72,16 @@ function getSimilarity(
   verses,
   length,
   edge = "1",
-  surah = "2",
-  juz = "1",
+  surah = ["2"],
+  juz = ["1"],
   remove = false,
   forcedVerse = undefined
 ) {
   let similar = [];
   let cached = [];
-  let juzNum = "";
+  let juzNum = [];
   const end = edge == "1" ? false : true;
-  if (juz !== "all") {
+  if (!juz.includes("all")) {
     juzNum = juz;
   }
 
@@ -166,8 +166,8 @@ function displaySimilarity(
   resultsDiv,
   length,
   edge = "1",
-  surah = "2",
-  juz = "1",
+  surah = ["2"],
+  juz = ["1"],
   remove = false
 ) {
   const selectedVerses = verses;
@@ -200,10 +200,12 @@ function verseCompare(
   compare,
   length,
   end = false,
-  surah = "2",
-  juzNum = "",
+  surah = ["2"],
+  juzNum = [],
   remove = false
 ) {
+
+  
   // don't do anything if the verse is already in the cached
   if (cached.includes(v1.id) && cached.includes(v2.id)) {
     return;
@@ -216,15 +218,17 @@ function verseCompare(
 
 
   condition = phrase1 == phrase2;
+  console.log("condition1", condition);
 
-  if (surah) {
-    condition = condition && v1.surah.id == surah && v2.surah.id == surah;
+  if (surah.length > 0) {
+    condition = condition && surah.includes(v1.surah.id) && surah.includes(v2.surah.id);
+    console.log("condition2", surah.includes(v1.surah.id) && surah.includes(v2.surah.id));
   }
 
-  if (juzNum) {
-    condition = condition && v1.juz == juzNum && v2.juz == juzNum;
+  if (juzNum.length > 0) {
+    condition = condition && juzNum.includes(v1.juz) && juzNum.includes(v2.juz);
+    console.log("condition3", juzNum.includes(v1.juz) && juzNum.includes(v2.juz));
   }
-
   if (condition) {
     compare.same = phrase1;
     if (v1.id < v2.id) {
@@ -260,7 +264,6 @@ function removeExtraChars(phrase) {
 
 function getVerse(id) {
   const verse = verses.filter((v) => v.id == id);
-  // console.log('verse', id, verse[0])
   return verse[0]?.words?.join(" ");
 }
 

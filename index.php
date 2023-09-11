@@ -70,10 +70,20 @@
           <div class="col-md-6">
             <label for="surah" class="form-label">السورة:</label>
             <select id="surah" name="surah" class="form-select">
+              <option value="1">الفاتحة</option>
               <option value="2">البقرة</option>
               <option value="3">آل عمران</option>
               <option value="4">النساء</option>
-              <option value="5">المائدة</option>              
+              <option value="5">المائدة</option>
+              <option value="6">الأنعام</option>
+              <option value="7">الأعراف</option>
+              <option value="8">الأنفال</option>
+              <option value="9">التوبة</option>
+              <option value="10">يونس</option>
+              <option value="11">هود</option>
+              <option value="12">يوسف</option>
+              <option value="13">الرعد</option>
+              <option value="14">إبراهيم</option>
             </select>
           </div>
           <div class="col-md-6">
@@ -84,7 +94,15 @@
               <option value="2">2</option>
               <option value="3">3</option>
               <option value="4">4</option>
-              <option value="5">5</option>              
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+              <option value="13">13</option>
             </select>
           </div>
         </div>
@@ -109,10 +127,21 @@
           <div class="col-md-6">
             <label for="quesSurah" class="form-label">السورة:</label>
             <select id="quesSurah" name="quesSurah" class="form-select">
+              <option value="all">اختر عشوائيا</option>
+              <option value="1">الفاتحة</option>
               <option value="2">البقرة</option>
               <option value="3">آل عمران</option>
               <option value="4">النساء</option>
               <option value="5">المائدة</option>
+              <option value="6">الأنعام</option>
+              <option value="7">الأعراف</option>
+              <option value="8">الأنفال</option>
+              <option value="9">التوبة</option>
+              <option value="10">يونس</option>
+              <option value="11">هود</option>
+              <option value="12">يوسف</option>
+              <option value="13">الرعد</option>
+              <option value="14">إبراهيم</option>
             </select>
           </div>
           <div class="col-md-6">
@@ -123,7 +152,15 @@
               <option value="2">2</option>
               <option value="3">3</option>
               <option value="4">4</option>
-              <option value="5">5</option>              
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+              <option value="13">13</option>
             </select>
           </div>
         </div>

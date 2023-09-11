@@ -178,19 +178,30 @@ function displaySimilarity(
 function displaySimilarityContent(resultsDiv, edge, similar) {
   const location = edge == 1 ? "اوائل" : "آواخر";
   let final = `<div class="alert alert-primary">المتشابهات في ${location} الآيات: ${similar.length}</div>`;
-  let conclusion = "<br>";
+  let summary = `<div class="accordion" id="summary">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="summary-header">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        المختصر
+      </button>
+    </h2>
+    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+      <div class="accordion-body">      
+      <table class="table table-sm table-striped">`;
   for (let verse of similar) {
-    final += `<div class="alert alert-success">`;
+    $linkId = Array.from(verse.ids).join("-");
+    final += `<div id="${$linkId}" class="alert alert-success">`;
     final += `<p class="text-primary">${verse.same}: ${verse.ids.size} متشابهة</p>`;
     final += `<p class="text-danger">أرقام الأيات: ${Array.from(verse.ids).join(
       "، "
     )}</p>`;
     final += `<p>${Array.from(verse.full).join("<br/>\n")}</p>`;
+    final += `<p><a href="#summary">عودة للمختصر</a> - <a href="#top">عودة للأعلى</a></p>`;
     final += `</div>`;
-    // conclusion += `${verse.same}<br/>`
+    summary += `<tr><td><a href="#${$linkId}">${verse.same}</a></td><td>${verse.ids.size}</td></tr>`;
   }
-
-  document.querySelector(resultsDiv).innerHTML = final + conclusion;
+  summary += `</table></div></div></div>`;
+  document.querySelector(resultsDiv).innerHTML = summary + final;
 }
 
 function verseCompare(
@@ -212,8 +223,6 @@ function verseCompare(
   let condition;
   phrase1 = formPhrase(v1, length, end, remove);
   phrase2 = formPhrase(v2, length, end, remove);
-
-
 
   condition = phrase1 == phrase2;
 
@@ -238,7 +247,7 @@ function verseCompare(
 }
 
 function addToComparison(compare, cached, verse) {
-  compare.ids.add(verse.id);
+  compare.ids.add(verse.num);
   compare.full.add(
     (
       verse.words.join(" ") +
@@ -284,8 +293,8 @@ function formPhrase(verse, length, end, remove) {
   // if the similar phrases is taken from end and starts with the word Allah
   // take the one extra word before it to avoid change of the meaning example
   // وما الله بغافل عما تعملون
-  if (end && phrase.startsWith('الله')) {
-    phrase = verse.words.slice(-length-1).join(" ");
+  if (end && phrase.startsWith("الله")) {
+    phrase = verse.words.slice(-length - 1).join(" ");
   }
 
   if (remove) {

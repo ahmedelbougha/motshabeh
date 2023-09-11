@@ -42,11 +42,10 @@
     </ul>
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-        <div class="row">
+        <div id="top" class="row">
           <div class="col-md-6">
             <label for="length" class="form-label">عدد الكلمات:</label>
             <select id="length" name="length" class="form-select">
-              <option value="0">0</option>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -72,6 +71,9 @@
             <label for="surah" class="form-label">السورة:</label>
             <select id="surah" name="surah" class="form-select">
               <option value="2">البقرة</option>
+              <option value="3">آل عمران</option>
+              <option value="4">النساء</option>
+              <option value="5">المائدة</option>              
             </select>
           </div>
           <div class="col-md-6">
@@ -81,6 +83,8 @@
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>              
             </select>
           </div>
         </div>
@@ -106,6 +110,9 @@
             <label for="quesSurah" class="form-label">السورة:</label>
             <select id="quesSurah" name="quesSurah" class="form-select">
               <option value="2">البقرة</option>
+              <option value="3">آل عمران</option>
+              <option value="4">النساء</option>
+              <option value="5">المائدة</option>
             </select>
           </div>
           <div class="col-md-6">
@@ -115,6 +122,8 @@
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>              
             </select>
           </div>
         </div>

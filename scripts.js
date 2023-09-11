@@ -1,3 +1,20 @@
+const surahs = [
+  { id: 1, name: "الفاتحة" },
+  { id: 2, name: "البقرة" },
+  { id: 3, name: "آل عمران" },
+  { id: 4, name: "النساء" },
+  { id: 5, name: "المائدة" },
+  { id: 6, name: "الأنعام" },
+  { id: 7, name: "الأعراف" },
+  { id: 8, name: "الأنفال" },
+  { id: 9, name: "التوبة" },
+  { id: 10, name: "يونس" },
+  { id: 11, name: "هود" },
+  { id: 12, name: "يوسف" },
+  { id: 13, name: "الرعد" },
+  { id: 14, name: "إبراهيم" },
+];
+
 function generateRandom(min = 0, max = 100) {
   // find diff
   let difference = max - min;
@@ -18,26 +35,31 @@ function getQuestion(surah, juz, similarOnly = false, remove = false) {
   const length = generateRandom(2, 6);
   const edge = generateRandom(1, 3);
   let forcedVerse;
+  let selectedSurah = surah == "all" ? generateRandom(1, 15) : surah;
+
+  let selectedVerses = verses.filter((verse) => verse.surah.id == selectedSurah);
 
   if (!similarOnly) {
-    const randomIndex = generateRandom(0, verses.length - 1);
-    forcedVerse = verses[randomIndex];
+    const randomIndex = generateRandom(0, selectedVerses.length - 1);
+    forcedVerse = selectedVerses[randomIndex];
   }
 
   const similar = getSimilarity(
-    verses,
+    selectedVerses,
     length,
     edge,
-    surah,
+    selectedSurah,
     juz,
     remove,
     forcedVerse
   );
+
   const similarIndex = generateRandom(0, similar.length);
-  console.log(similar);
+console.log("surahs", selectedSurah,surahs, surahs.find(surhaItem => surhaItem.id == selectedSurah))
   return {
     question: similar[similarIndex].same,
     fullAnswer: similar[similarIndex],
+    surahName: surahs.find(surhaItem => surhaItem.id == selectedSurah)['name'],
   };
 }
 
@@ -49,17 +71,29 @@ function displayQuestion(
   similarOnly = false,
   remove = false
 ) {
-  const { question, fullAnswer } = getQuestion(surah, juz, similarOnly, remove);
-  displayQuestionContent(questionDev, resultDev, question, fullAnswer);
+  const { question, fullAnswer, surahName } = getQuestion(
+    surah,
+    juz,
+    similarOnly,
+    remove
+  );
+  displayQuestionContent(questionDev, resultDev, question, fullAnswer, surahName);
 }
 
-function displayQuestionContent(questionDev, resultsDiv, question, fullAnswer) {
+function displayQuestionContent(
+  questionDev,
+  resultsDiv,
+  question,
+  fullAnswer,
+  surahName
+) {
   let questionFinal = `<div class="alert alert-primary">أكمل: ${question}</div>`;
 
   let answerFinal = `<div class="alert alert-success">`;
-  answerFinal += `<p class="text-primary">${question}: ${fullAnswer.ids.size} متشابهة</p>`;
+  answerFinal += `<p class="text-primary">سورة: ${surahName}</p>`;
+  answerFinal += `<p class="text-primary">${question}: ${fullAnswer.nums.size} متشابهة</p>`;
   answerFinal += `<p class="text-danger">أرقام الأيات: ${Array.from(
-    fullAnswer.ids
+    fullAnswer.nums
   ).join("، ")}</p>`;
   answerFinal += `<p>${Array.from(fullAnswer.full).join("<br/>\n")}</p>`;
   answerFinal += `</div>`;
@@ -77,6 +111,7 @@ function getSimilarity(
   remove = false,
   forcedVerse = undefined
 ) {
+  console.log('surah', surah)
   let similar = [];
   let cached = [];
   let juzNum = "";
@@ -89,6 +124,7 @@ function getSimilarity(
   let compare = {
     same: [],
     ids: new Set(),
+    nums: new Set(),
     full: new Set(),
   };
 
@@ -122,6 +158,7 @@ function getSimilarity(
       compare = {
         same: [],
         ids: new Set(),
+        nums: new Set(),
         full: new Set(),
       };
 
@@ -153,6 +190,7 @@ function getSimilarity(
     let compare = {
       same: [phrase],
       ids: new Set(),
+      nums: new Set(),
       full: new Set(),
     };
 
@@ -171,14 +209,22 @@ function displaySimilarity(
   remove = false
 ) {
   const selectedVerses = verses;
-  const similar = getSimilarity(selectedVerses, length, edge, surah, juz);
+  const similar = getSimilarity(
+    selectedVerses,
+    length,
+    edge,
+    surah,
+    juz,
+    remove
+  );
   displaySimilarityContent(resultsDiv, edge, similar);
 }
 
 function displaySimilarityContent(resultsDiv, edge, similar) {
   const location = edge == 1 ? "اوائل" : "آواخر";
-  let final = `<div class="alert alert-primary">المتشابهات في ${location} الآيات: ${similar.length}</div>`;
-  let summary = `<div class="accordion" id="summary">
+  let final = "";
+  let summary = `<div class="alert alert-primary">المتشابهات في ${location} الآيات: ${similar.length}</div>
+  <div class="accordion" id="summary">
   <div class="accordion-item">
     <h2 class="accordion-header" id="summary-header">
       <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -191,14 +237,14 @@ function displaySimilarityContent(resultsDiv, edge, similar) {
   for (let verse of similar) {
     $linkId = Array.from(verse.ids).join("-");
     final += `<div id="${$linkId}" class="alert alert-success">`;
-    final += `<p class="text-primary">${verse.same}: ${verse.ids.size} متشابهة</p>`;
-    final += `<p class="text-danger">أرقام الأيات: ${Array.from(verse.ids).join(
-      "، "
-    )}</p>`;
+    final += `<p class="text-primary">${verse.same}: ${verse.nums.size} متشابهة</p>`;
+    final += `<p class="text-danger">أرقام الأيات: ${Array.from(
+      verse.nums
+    ).join("، ")}</p>`;
     final += `<p>${Array.from(verse.full).join("<br/>\n")}</p>`;
     final += `<p><a href="#summary">عودة للمختصر</a> - <a href="#top">عودة للأعلى</a></p>`;
     final += `</div>`;
-    summary += `<tr><td><a href="#${$linkId}">${verse.same}</a></td><td>${verse.ids.size}</td></tr>`;
+    summary += `<tr><td><a href="#${$linkId}">${verse.same}</a></td><td>${verse.nums.size}</td></tr>`;
   }
   summary += `</table></div></div></div>`;
   document.querySelector(resultsDiv).innerHTML = summary + final;
@@ -215,7 +261,7 @@ function verseCompare(
   juzNum = "",
   remove = false
 ) {
-  // don't do anything if the verse is already in the cached
+  // do nothing if the two verses are already in the cached array
   if (cached.includes(v1.id) && cached.includes(v2.id)) {
     return;
   }
@@ -247,7 +293,8 @@ function verseCompare(
 }
 
 function addToComparison(compare, cached, verse) {
-  compare.ids.add(verse.num);
+  compare.nums.add(verse.num);
+  compare.ids.add(verse.id);
   compare.full.add(
     (
       verse.words.join(" ") +
@@ -258,7 +305,7 @@ function addToComparison(compare, cached, verse) {
       })">التالية</button>`
     ).replace(compare.same, `<span class="text-primary">${compare.same}</span>`)
   );
-  cached.push(verse.num);
+  cached.push(verse.id);
 }
 
 function removeExtraChars(phrase) {
@@ -269,7 +316,6 @@ function removeExtraChars(phrase) {
 
 function getVerse(id) {
   const verse = verses.filter((v) => v.id == id);
-  // console.log('verse', id, verse[0])
   return verse[0]?.words?.join(" ");
 }
 

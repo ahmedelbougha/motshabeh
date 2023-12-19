@@ -55,7 +55,7 @@ function getQuestion(surah, juz, similarOnly = false, remove = false) {
   );
 
   const similarIndex = generateRandom(0, similar.length);
-console.log("surahs", selectedSurah,surahs, surahs.find(surhaItem => surhaItem.id == selectedSurah))
+  //console.log("surahs", selectedSurah,surahs, surahs.find(surhaItem => surhaItem.id == selectedSurah))
   return {
     question: similar[similarIndex].same,
     fullAnswer: similar[similarIndex],
